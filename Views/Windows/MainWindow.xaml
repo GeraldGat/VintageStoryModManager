@@ -1,0 +1,102 @@
+﻿<Window x:Class="VintageStoryModManager.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VintageStoryModManager.Views"
+        mc:Ignorable="d"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        Title="MainWindow"
+        Style="{StaticResource BaseWindowStyle}">
+
+    <Border Style="{StaticResource BaseWindowBorderStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Style="{StaticResource MenuStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Modpack Manager" Grid.Row="0" Style="{StaticResource HeaderMenuStyle}"/>
+
+                <StackPanel Grid.Row="1">
+                    <RadioButton x:Name="MenuMyModpack"
+                                 Style="{StaticResource MenuItemStyle}"
+                                 GroupName="Menu"
+                                 IsChecked="{Binding SelectedMenu, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=MyModpacks, Mode=TwoWay}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconLucide Kind="House"/>
+                            <TextBlock Text="My modpacks"/>
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton x:Name="MenuBrowse"
+                                 Style="{StaticResource MenuItemStyle}"
+                                 GroupName="Menu"
+                                 IsChecked="{Binding SelectedMenu, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=Browse, Mode=TwoWay}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconLucide Kind="Search"/>
+                            <TextBlock Text="Browse modpacks"/>
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton x:Name="MenuInstalled"
+                                 Style="{StaticResource MenuItemStyle}"
+                                 GroupName="Menu"
+                                 IsChecked="{Binding SelectedMenu, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=Installed, Mode=TwoWay}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconLucide Kind="Package"/>
+                            <TextBlock Text="Installed versions"/>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+
+                <RadioButton x:Name="MenuConfig"
+                             Style="{StaticResource MenuItemStyle}"
+                             GroupName="Menu" Grid.Row="2"
+                             IsChecked="{Binding SelectedMenu, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=Settings, Mode=TwoWay}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconLucide Kind="Settings"/>
+                        <TextBlock Text="Settings"/>
+                    </StackPanel>
+                </RadioButton>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" Style="{StaticResource BaseWindowControlButtonsStyle}">
+                    <DockPanel DockPanel.Dock="Right" HorizontalAlignment="Right">
+                        <Button Click="Minimize_Click">
+                            <iconPacks:PackIconLucide Kind="Minus"/>
+                        </Button>
+                        <Button Click="Maximize_Click">
+                            <iconPacks:PackIconLucide Kind="Square"/>
+                        </Button>
+                        <Button Click="Close_Click">
+                            <iconPacks:PackIconLucide Kind="X"/>
+                        </Button>
+                    </DockPanel>
+                </DockPanel>
+
+                <ContentControl Grid.Row="1" x:Name="MainContent" Padding="20">
+                    <ContentControl.Template>
+                        <ControlTemplate TargetType="ContentControl">
+                            <Border Padding="{TemplateBinding Padding}">
+                                <ContentPresenter/>
+                            </Border>
+                        </ControlTemplate>
+                    </ContentControl.Template>
+                </ContentControl>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

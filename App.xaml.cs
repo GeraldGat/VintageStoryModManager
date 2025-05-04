@@ -3,6 +3,11 @@ using Microsoft.Extensions.Hosting;
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using VintageStoryModManager.Services;
+using VintageStoryModManager.Services.Interfaces;
+using VintageStoryModManager.ViewModels;
+using VintageStoryModManager.Views;
+using VintageStoryModManager.Views.Controls;
 
 namespace VintageStoryModManager
 {
@@ -19,11 +24,19 @@ namespace VintageStoryModManager
                 .ConfigureServices((context, services) =>
                 {
                     // Views
+                        // Windows
                     services.AddTransient<MainWindow>();
+                        // Controls
+                    services.AddTransient<BrowseModpacksPage>();
+                    services.AddTransient<InstalledVersionsPage>();
+                    services.AddTransient<MyModpacksPage>();
+                    services.AddTransient<SettingsPage>();
 
                     // Services
+                    services.AddSingleton<INavigationService, NavigationService>();
 
                     // ViewModels
+                    services.AddTransient<MainWindowViewModel>();
                 })
                 .Build();
         }
