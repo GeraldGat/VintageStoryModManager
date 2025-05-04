@@ -3,6 +3,8 @@ using Microsoft.Extensions.Hosting;
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using VintageStoryModManager.ViewModels;
+using VintageStoryModManager.Views;
 
 namespace VintageStoryModManager
 {
@@ -24,6 +26,7 @@ namespace VintageStoryModManager
                     // Services
 
                     // ViewModels
+                    services.AddTransient<MainWindowViewModel>();
                 })
                 .Build();
         }
