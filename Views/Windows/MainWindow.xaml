@@ -16,8 +16,56 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
-                <TextBlock Text="Menu" Width="100"/>
+            <Grid Grid.Column="0" Style="{StaticResource MenuStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Modpack Manager" Grid.Row="0" Style="{StaticResource HeaderMenuStyle}"/>
+
+                <StackPanel Grid.Row="1">
+                    <RadioButton x:Name="MenuMyModpack"
+                                 Style="{StaticResource MenuItemStyle}"
+                                 GroupName="Menu"
+                                 IsChecked="{Binding SelectedMenu, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=MyModpacks, Mode=TwoWay}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconLucide Kind="House"/>
+                            <TextBlock Text="My modpacks"/>
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton x:Name="MenuBrowse"
+                                 Style="{StaticResource MenuItemStyle}"
+                                 GroupName="Menu"
+                                 IsChecked="{Binding SelectedMenu, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=Browse, Mode=TwoWay}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconLucide Kind="Search"/>
+                            <TextBlock Text="Browse modpacks"/>
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton x:Name="MenuInstalled"
+                                 Style="{StaticResource MenuItemStyle}"
+                                 GroupName="Menu"
+                                 IsChecked="{Binding SelectedMenu, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=Installed, Mode=TwoWay}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconLucide Kind="Package"/>
+                            <TextBlock Text="Installed versions"/>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+
+                <RadioButton x:Name="MenuConfig"
+                             Style="{StaticResource MenuItemStyle}"
+                             GroupName="Menu" Grid.Row="2"
+                             IsChecked="{Binding SelectedMenu, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=Settings, Mode=TwoWay}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconLucide Kind="Settings"/>
+                        <TextBlock Text="Settings"/>
+                    </StackPanel>
+                </RadioButton>
             </Grid>
 
             <Grid Grid.Column="1">
@@ -39,7 +87,15 @@
                     </DockPanel>
                 </DockPanel>
 
-                <ContentControl Grid.Row="1" x:Name="MainContent" Padding="20"/>
+                <ContentControl Grid.Row="1" x:Name="MainContent" Padding="20">
+                    <ContentControl.Template>
+                        <ControlTemplate TargetType="ContentControl">
+                            <Border Padding="{TemplateBinding Padding}">
+                                <ContentPresenter/>
+                            </Border>
+                        </ControlTemplate>
+                    </ContentControl.Template>
+                </ContentControl>
             </Grid>
         </Grid>
     </Border>
