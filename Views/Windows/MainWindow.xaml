@@ -5,8 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VintageStoryModManager.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        Title="MainWindow"
+        Style="{StaticResource BaseWindowStyle}">
+
+    <Border Style="{StaticResource BaseWindowBorderStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <TextBlock Text="Menu" Width="100"/>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" Style="{StaticResource BaseWindowControlButtonsStyle}">
+                    <DockPanel DockPanel.Dock="Right" HorizontalAlignment="Right">
+                        <Button Click="Minimize_Click">
+                            <iconPacks:PackIconLucide Kind="Minus"/>
+                        </Button>
+                        <Button Click="Maximize_Click">
+                            <iconPacks:PackIconLucide Kind="Square"/>
+                        </Button>
+                        <Button Click="Close_Click">
+                            <iconPacks:PackIconLucide Kind="X"/>
+                        </Button>
+                    </DockPanel>
+                </DockPanel>
+
+                <ContentControl Grid.Row="1" x:Name="MainContent" Padding="20"/>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>
