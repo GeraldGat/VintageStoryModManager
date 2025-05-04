@@ -9,8 +9,11 @@
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles/Themes/DarkTheme.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/Controls.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Menus.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Texts.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/UserControls.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Windows.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -6,5 +6,11 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="Roboto"/>
     </Style>
+
+    <Style TargetType="iconPacks:PackIconLucide" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Width" Value="15"/>
+    </Style>
     
 </ResourceDictionary>

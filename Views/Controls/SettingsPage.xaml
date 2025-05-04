@@ -4,7 +4,92 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VintageStoryModManager.Views.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <TextBlock Text="Settings"/>
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Style="{StaticResource PageHeaderStyle}" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Settings" Grid.Column="0"/>
+
+            <StackPanel Grid.Column="2">
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <iconPacks:PackIconLucide Kind="FolderOpen" Margin="0,0,5,0"/>
+                <TextBlock Text="Game versions location"/>
+            </StackPanel>
+
+            <TextBox Text="{Binding GameVersionsPath}"
+                 Grid.Row="0" Grid.Column="2"
+                 IsReadOnly="True"/>
+
+            <Button Command="{Binding BrowseGameVersionsPathCommand}" 
+                Grid.Row="0" Grid.Column="4"
+                Height="Auto">
+                <Button.Content>
+                    <iconPacks:PackIconLucide Kind="FolderSearch"/>
+                </Button.Content>
+            </Button>
+
+            <Button Command="{Binding ResetGameVersionsPathCommand}" 
+                Grid.Row="0" Grid.Column="6"
+                Height="Auto">
+                <Button.Content>
+                    <iconPacks:PackIconLucide Kind="RotateCcw"/>
+                </Button.Content>
+            </Button>
+
+            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <iconPacks:PackIconLucide Kind="FolderOpen" Margin="0,0,5,0"/>
+                <TextBlock Text="Modpack directory"/>
+            </StackPanel>
+
+            <TextBox Text="{Binding ModpacksPath}"
+                 Grid.Row="2" Grid.Column="2"
+                 IsReadOnly="True"/>
+
+            <Button Command="{Binding BrowseModpacksPathCommand}" 
+                Grid.Row="2" Grid.Column="4"
+                Height="Auto">
+                <Button.Content>
+                    <iconPacks:PackIconLucide Kind="FolderSearch"/>
+                </Button.Content>
+            </Button>
+
+            <Button Command="{Binding ResetModpacksPathCommand}" 
+                Grid.Row="2" Grid.Column="6"
+                Height="Auto">
+                <Button.Content>
+                    <iconPacks:PackIconLucide Kind="RotateCcw"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+    </Grid>
 </UserControl>
