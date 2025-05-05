@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Configuration;
-using System.Data;
+using System.IO;
+using System.Text.Json;
 using System.Windows;
+using VintageStoryModManager.Models;
 using VintageStoryModManager.Services;
 using VintageStoryModManager.Services.Interfaces;
 using VintageStoryModManager.ViewModels;
@@ -18,9 +20,17 @@ namespace VintageStoryModManager
     {
         public static IHost? AppHost { get; private set; }
 
+        public static string AppSettingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+
         public App()
         {
+            EnsureAppSettingsExists();
+
             AppHost = Host.CreateDefaultBuilder()
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    config.AddJsonFile(AppSettingsPath, optional: false, reloadOnChange: true);
+                })
                 .ConfigureServices((context, services) =>
                 {
                     // Views
@@ -33,10 +43,12 @@ namespace VintageStoryModManager
                     services.AddTransient<SettingsPage>();
 
                     // Services
+                    services.AddSingleton<IConfigurationService, ConfigurationService>();
                     services.AddSingleton<INavigationService, NavigationService>();
 
                     // ViewModels
                     services.AddTransient<MainWindowViewModel>();
+                    services.AddTransient<SettingsPageViewModel>();
                 })
                 .Build();
         }
@@ -55,6 +67,21 @@ namespace VintageStoryModManager
         {
             await AppHost!.StopAsync();
             base.OnExit(e);
+        }
+
+        protected static void EnsureAppSettingsExists()
+        {
+            if (!File.Exists(AppSettingsPath))
+            {
+                var defaultConfig = new
+                {
+                    AppConfig = new AppConfig()
+                };
+
+                var json = JsonSerializer.Serialize(defaultConfig, new JsonSerializerOptions());
+
+                File.WriteAllText(AppSettingsPath, json);
+            }
         }
     }
 }
