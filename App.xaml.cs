@@ -45,6 +45,7 @@ namespace VintageStoryModManager
                     // Services
                     services.AddSingleton<IConfigurationService, ConfigurationService>();
                     services.AddSingleton<INavigationService, NavigationService>();
+                    services.AddSingleton<IThemeManager, ThemeManager>();
 
                     // ViewModels
                     services.AddTransient<MainWindowViewModel>();
@@ -59,6 +60,10 @@ namespace VintageStoryModManager
 
             var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
             mainWindow.Show();
+
+            var themeManager = AppHost.Services.GetRequiredService<IThemeManager>();
+            var configurationService = AppHost.Services.GetRequiredService<IConfigurationService>();
+            themeManager.ApplyTheme(configurationService.AppConfig.AppTheme);
 
             base.OnStartup(e);
         }

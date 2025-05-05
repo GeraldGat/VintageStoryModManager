@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using VintageStoryModManager.Services;
 
 namespace VintageStoryModManager.Models
 {
@@ -6,6 +7,7 @@ namespace VintageStoryModManager.Models
     {
         public string GameVersionsPath { get; set; } = DefaultGameVersionPath();
         public string ModpacksPath { get; set; } = DefaultGameVersionPath();
+        public string AppTheme { get; set; } = ThemeManager.GetAppColorThemeFromSystem();
 
         public static string DefaultGameVersionPath()
         {
