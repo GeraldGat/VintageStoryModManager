@@ -37,5 +37,18 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Margin" Value="2,0"/>
+        <Style.Resources>
+            <Style TargetType="iconPacks:PackIconLucide" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
+                <Setter Property="Width" Value="15"/>
+                <Setter Property="Height" Value="15"/>
+            </Style>
+        </Style.Resources>
+    </Style>
     
 </ResourceDictionary>

@@ -48,6 +48,7 @@ namespace VintageStoryModManager
                     services.AddSingleton<IThemeManager, ThemeManager>();
 
                     // ViewModels
+                    services.AddTransient<InstalledVersionsPageViewModel>();
                     services.AddTransient<MainWindowViewModel>();
                     services.AddTransient<SettingsPageViewModel>();
                 })
