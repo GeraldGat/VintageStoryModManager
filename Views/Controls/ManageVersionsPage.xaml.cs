@@ -3,9 +3,9 @@ using VintageStoryModManager.ViewModels;
 
 namespace VintageStoryModManager.Views.Controls
 {
-    public partial class InstalledVersionsPage : UserControl
+    public partial class ManageVersionsPage : UserControl
     {
-        public InstalledVersionsPage(InstalledVersionsPageViewModel viewModel)
+        public ManageVersionsPage(ManageVersionPageViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;

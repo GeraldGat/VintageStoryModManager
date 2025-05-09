@@ -21,6 +21,7 @@ namespace VintageStoryModManager
         public static IHost? AppHost { get; private set; }
 
         public static string AppSettingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+        public static string AppAvailableVersionsPath = Path.Combine(AppContext.BaseDirectory, "availableversions.json");
 
         public App()
         {
@@ -38,18 +39,24 @@ namespace VintageStoryModManager
                     services.AddTransient<MainWindow>();
                         // Controls
                     services.AddTransient<BrowseModpacksPage>();
-                    services.AddTransient<InstalledVersionsPage>();
+                    services.AddTransient<ManageVersionsPage>();
                     services.AddTransient<MyModpacksPage>();
                     services.AddTransient<SettingsPage>();
 
                     // Services
                     services.AddSingleton<IConfigurationService, ConfigurationService>();
+                    services.AddSingleton<IGameVersionManager, GameVersionManager>();
                     services.AddSingleton<INavigationService, NavigationService>();
                     services.AddSingleton<IThemeManager, ThemeManager>();
+                    services.AddHttpClient<IVersionDownloadService, VersionDownloadService>();
+                    services.AddHttpClient<IVintageStoryApiService, VintageStoryApiService>(client =>
+                    {
+                        client.BaseAddress = new Uri("https://mods.vintagestory.at/api/");
+                    });
 
                     // ViewModels
-                    services.AddTransient<InstalledVersionsPageViewModel>();
                     services.AddTransient<MainWindowViewModel>();
+                    services.AddTransient<ManageVersionPageViewModel>();
                     services.AddTransient<SettingsPageViewModel>();
                 })
                 .Build();
