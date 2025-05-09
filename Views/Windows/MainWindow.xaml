@@ -52,7 +52,7 @@
                                  IsChecked="{Binding SelectedMenu, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=Installed, Mode=TwoWay}">
                         <StackPanel Orientation="Horizontal">
                             <iconPacks:PackIconLucide Kind="Package"/>
-                            <TextBlock Text="Installed versions"/>
+                            <TextBlock Text="Manage versions"/>
                         </StackPanel>
                     </RadioButton>
                 </StackPanel>

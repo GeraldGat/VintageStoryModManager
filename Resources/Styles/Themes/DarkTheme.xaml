@@ -3,6 +3,7 @@
 
     <SolidColorBrush x:Key="BackgroundColor" Color="#2D2D2D"/>
     <SolidColorBrush x:Key="ForegroundColor" Color="#E0E0E0"/>
+    <SolidColorBrush x:Key="AccentColor" Color="#4e4e7b"/>
     
     <SolidColorBrush x:Key="WindowBackgroundColor" Color="#1E1E2F"/>
     <SolidColorBrush x:Key="WindowBorderColor" Color="#333"/>

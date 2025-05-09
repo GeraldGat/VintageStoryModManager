@@ -28,7 +28,7 @@ namespace VintageStoryModManager.ViewModels
                     _navigationService.Navigate<BrowseModpacksPage>();
                     break;
                 case "Installed":
-                    _navigationService.Navigate<InstalledVersionsPage>();
+                    _navigationService.Navigate<ManageVersionsPage>();
                     break;
                 case "Settings":
                     _navigationService.Navigate<SettingsPage>();
