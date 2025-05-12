@@ -39,6 +39,7 @@
                     <RadioButton x:Name="MenuBrowse"
                                  Style="{StaticResource MenuItemStyle}"
                                  GroupName="Menu"
+                                 IsEnabled="False"
                                  IsChecked="{Binding SelectedMenu, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=Browse, Mode=TwoWay}">
                         <StackPanel Orientation="Horizontal">
                             <iconPacks:PackIconLucide Kind="Search"/>

@@ -40,6 +40,9 @@
                 <Setter Property="Background" Value="{DynamicResource MenuItemBackgroundSelectedColor}"/>
                 <Setter Property="FontWeight" Value="Bold"/>
             </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource MenuForegoundDisabledColor}"/>
+            </Trigger>
         </Style.Triggers>
         <Style.Resources>
             <Style TargetType="TextBlock">

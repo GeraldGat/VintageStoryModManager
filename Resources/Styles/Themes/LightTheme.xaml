@@ -13,6 +13,7 @@
     <SolidColorBrush x:Key="MenuItemBackgroundHoverColor" Color="#E6F0FF"/>
     <SolidColorBrush x:Key="MenuItemBackgroundSelectedColor" Color="#D6E4FF"/>
     <SolidColorBrush x:Key="MenuForegoundColor" Color="#1A1A1A"/>
+    <SolidColorBrush x:Key="MenuForegoundDisabledColor" Color="#4D1A1A1A"/>
 
     <SolidColorBrush x:Key="BorderColor" Color="#DADADA"/>
     <SolidColorBrush x:Key="HoverColor" Color="#E9EEF7"/>
