@@ -69,6 +69,39 @@ namespace VintageStoryModManager.Services
             return versions;
         }
 
+        public async Task<IDictionary<string, VersionInfos>> GetInstalledVersions()
+        {
+            var versions = FormatVersionList(await _vintageStoryApiService.GetVersionsAsync());
+
+            foreach (var directory in Directory.GetDirectories(_configurationService.AppConfig.GameVersionsPath, "*", SearchOption.TopDirectoryOnly))
+            {
+                var assetsDir = Path.Combine(directory, "assets");
+
+                if (!Directory.Exists(assetsDir))
+                    continue;
+
+                var versionFile = Directory.GetFiles(assetsDir, "version-*.txt", SearchOption.TopDirectoryOnly).FirstOrDefault();
+
+                if (versionFile is not null)
+                {
+                    var fileName = Path.GetFileNameWithoutExtension(versionFile);
+                    if (fileName.StartsWith("version-", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var version = "v" + fileName.Substring("version-".Length);
+
+                        if (versions.ContainsKey(version))
+                        {
+                            versions[version].FolderName = directory;
+                        }
+                    }
+                }
+            }
+
+            versions = versions.Where(v => v.Value.IsInstalled).ToDictionary<string, VersionInfos>();
+
+            return versions;
+        }
+
         private IDictionary<string, VersionInfos> FormatVersionList(IEnumerable<VersionInfos> versions)
         {
             Dictionary<string, VersionInfos> formatedVersions = [];
