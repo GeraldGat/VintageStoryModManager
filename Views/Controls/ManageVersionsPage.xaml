@@ -57,6 +57,9 @@
                                                 <DataTrigger Binding="{Binding IsInstalled}" Value="True">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsInstalling}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="False" />
+                                                </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Button.Style>

@@ -81,6 +81,10 @@ namespace VintageStoryModManager.Services
 
         public async Task<VersionInfos?> AddGameVersion(VersionInfos version)
         {
+            if (version.IsInstalling == true)
+                return version;
+
+            version.IsInstalling = true;
             string tempDir = Path.Combine(_configurationService.AppConfig.GameVersionsPath, $"tmp_{Guid.NewGuid()}");
             string folderName = Guid.NewGuid().ToString();
             string versionDir = Path.Combine(_configurationService.AppConfig.GameVersionsPath, folderName);
@@ -128,12 +132,14 @@ namespace VintageStoryModManager.Services
 
                 version.FolderName = versionDir;
 
+                version.IsInstalling = false;
                 return version;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred while downloading or installing the version.", "Installation Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            version.IsInstalling = false;
             return null;
         }
 

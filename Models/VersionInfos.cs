@@ -12,6 +12,10 @@ namespace VintageStoryModManager.Models
 
         [ObservableProperty]
         [JsonIgnore]
+        private bool isInstalling = false;
+
+        [ObservableProperty]
+        [JsonIgnore]
         private string? folderName;
         [JsonIgnore]
         public bool IsInstalled => FolderName != null && Directory.Exists(FolderName);
