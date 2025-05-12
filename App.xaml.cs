@@ -57,6 +57,7 @@ namespace VintageStoryModManager
                     // ViewModels
                     services.AddTransient<MainWindowViewModel>();
                     services.AddTransient<ManageVersionPageViewModel>();
+                    services.AddTransient<MyModpacksPageViewModel>();
                     services.AddTransient<SettingsPageViewModel>();
                 })
                 .Build();

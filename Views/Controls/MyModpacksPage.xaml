@@ -4,7 +4,76 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VintageStoryModManager.Views.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <TextBlock Text="My Modpacks"/>
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Style="{StaticResource PageHeaderStyle}" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="My modpacks" Grid.Column="0"/>
+
+            <StackPanel Grid.Column="2">
+                <Button Content="Import Modpack"
+                    Command="{Binding ImportCommand}"/>
+
+                <Button Content="Create Modpack"
+                    Command="{Binding CreateCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <DataGrid x:Name="ModpacksDataGrid"
+              AutoGenerateColumns="False"
+              IsReadOnly="True"
+              CanUserAddRows="False"
+              Grid.Row="1"
+              ScrollViewer.VerticalScrollBarVisibility="Hidden"
+              ItemsSource="{Binding Modpacks}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="Game version" Binding="{Binding GameVersion}" Width="Auto"/>
+                <DataGridTemplateColumn Header="" Width="150" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Style="{StaticResource DataGridActions}">
+                                <Button Command="{Binding DataContext.StartCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconLucide Kind="Play"/>
+                                    </Button.Content>
+                                </Button>
+                                <Button Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconLucide Kind="Pencil"/>
+                                    </Button.Content>
+                                </Button>
+                                <Button Command="{Binding DataContext.ExportCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconLucide Kind="Share"/>
+                                    </Button.Content>
+                                </Button>
+                                <Button Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconLucide Kind="Trash2"/>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
 </UserControl>
