@@ -5,8 +5,8 @@ namespace VintageStoryModManager.Services.Interfaces
 {
     public interface IModpackManager
     {
-        public ModpackInfos? AddModpack(ModpackInfos modpack);
-        public ModpackInfos? ImportModpack(ModpackInfos modpack, ZipArchive modpackArchive);
+        public ModpackInfos? AddModpack(ModpackInfos modpackInfos);
+        public ModpackInfos? ImportModpack(ModpackInfos modpackInfos, ZipArchive modpackArchive);
         public List<ModpackInfos> GetInstalledModpacks();
     }
 }

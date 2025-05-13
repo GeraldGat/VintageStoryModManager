@@ -20,7 +20,7 @@ namespace VintageStoryModManager.Services
             _configurationService = configurationService;
         }
 
-        public ModpackInfos? AddModpack(ModpackInfos modpack)
+        public ModpackInfos? AddModpack(ModpackInfos modpackInfos)
         {
             string folderName = Guid.NewGuid().ToString();
             string modpackDir = Path.Combine(_configurationService.AppConfig.ModpacksPath, folderName);
@@ -29,13 +29,13 @@ namespace VintageStoryModManager.Services
             {
                 Directory.CreateDirectory(modpackDir);
 
-                modpack.FolderName = folderName;
+                modpackInfos.FolderName = folderName;
 
-                string json = JsonSerializer.Serialize(modpack, _jsonSerializerOptions);
+                string json = JsonSerializer.Serialize(modpackInfos, _jsonSerializerOptions);
                 string jsonPath = Path.Combine(modpackDir, "modpack.json");
                 File.WriteAllText(jsonPath, json);
 
-                return modpack;
+                return modpackInfos;
             }
             catch (Exception ex)
             {
@@ -44,9 +44,14 @@ namespace VintageStoryModManager.Services
             return null;
         }
 
-        public ModpackInfos? ImportModpack(ModpackInfos modpack, ZipArchive modpackArchive)
+        public ModpackInfos? ImportModpack(ModpackInfos modpackInfos, ZipArchive modpackArchive)
         {
-            throw new NotImplementedException();
+            AddModpack(modpackInfos);
+
+            if (modpackInfos.FolderName != null)
+                modpackArchive.ExtractToDirectory(Path.Combine(_configurationService.AppConfig.ModpacksPath, modpackInfos.FolderName), true);
+
+            return modpackInfos;
         }
 
         public List<ModpackInfos> GetInstalledModpacks()

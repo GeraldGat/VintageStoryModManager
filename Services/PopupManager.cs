@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO.Compression;
+using System.Windows;
 using VintageStoryModManager.Models;
 using VintageStoryModManager.Services.Interfaces;
 using VintageStoryModManager.ViewModels.Popups;
@@ -35,6 +36,27 @@ namespace VintageStoryModManager.Services
                 return (true, modpackInfo);
             }
             return (false, null);
+        }
+
+        public (bool, ModpackInfos?, ZipArchive?) ShowImportModpackPopup()
+        {
+            var popup = new ImportModpackPopup();
+            var dialogService = new DialogService(popup);
+            var viewModel = new ImportModpackPopupViewModel(dialogService, _gameVersionManager);
+            popup.DataContext = viewModel;
+            popup.Owner = Application.Current.MainWindow;
+            bool? result = popup.ShowDialog();
+            if (result == true && !string.IsNullOrWhiteSpace(viewModel.ModpackName) && viewModel.SelectedVersion != null && !string.IsNullOrWhiteSpace(viewModel.ModpackArchivePath))
+            {
+                var modpackInfo = new ModpackInfos()
+                {
+                    Name = viewModel.ModpackName,
+                    Version = viewModel.SelectedVersion
+                };
+                var modpackArchive = ZipFile.OpenRead(viewModel.ModpackArchivePath);
+                return (true, modpackInfo, modpackArchive);
+            }
+            return (false, null, null);
         }
     }
 }

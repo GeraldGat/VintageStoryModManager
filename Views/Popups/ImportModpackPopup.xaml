@@ -1,0 +1,45 @@
+﻿<Window x:Class="VintageStoryModManager.Views.Popups.ImportModpackPopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VintageStoryModManager.Views.Popups"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        Title="Import modpack"
+        WindowStartupLocation="CenterOwner"
+        Style="{StaticResource PopupWindowStyle}">
+    <Border Style="{StaticResource PopupWindowBorderStyle}">
+        <StackPanel>
+            <TextBlock Text="Import Modpack" Style="{StaticResource PopupTitleStyle}"/>
+
+            <TextBlock Text="Modpack Path (.zip)"/>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                <TextBox Text="{Binding ModpackArchivePath, Mode=TwoWay}" Width="230" IsReadOnly="True"/>
+                <Button Margin="5,0,0,0"
+                        Command="{Binding BrowseModpackArchiveCommand}">
+                    <Button.Content>
+                        <iconPacks:PackIconLucide Kind="FolderSearch"/>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+
+            <TextBlock Text="Name"/>
+            <TextBox Text="{Binding ModpackName, Mode=TwoWay}"
+                     Margin="0,5,0,5"/>
+
+            <TextBlock Text="Version Number"/>
+            <ComboBox ItemsSource="{Binding InstalledVersions.Values}"
+                      DisplayMemberPath="Name"
+                      SelectedItem="{Binding SelectedVersion, Mode=TwoWay}"
+                      Margin="0,5,0,5"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                <Button Content="Cancel" 
+                        Command="{Binding CancelCommand}"
+                        Margin="0,0,10,0"/>
+                <Button Content="Import"
+                        Command="{Binding ImportCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

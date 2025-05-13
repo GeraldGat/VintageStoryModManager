@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using VintageStoryModManager.Models;
@@ -17,7 +16,7 @@ namespace VintageStoryModManager.ViewModels.Popups
         private string modpackName = string.Empty;
 
         [ObservableProperty]
-        private ObservableCollection<VersionInfos> installedVersions = [];
+        private IDictionary<string, VersionInfos> installedVersions = new Dictionary<string, VersionInfos>();
 
         [ObservableProperty]
         private VersionInfos? selectedVersion;
@@ -32,7 +31,7 @@ namespace VintageStoryModManager.ViewModels.Popups
         private async Task LoadInstalledVersion()
         {
             InstalledVersions.Clear();
-            InstalledVersions = [.. (await _gameVersionManager.GetInstalledVersions()).Values];
+            InstalledVersions = await _gameVersionManager.GetInstalledVersions();
         }
 
         [RelayCommand]

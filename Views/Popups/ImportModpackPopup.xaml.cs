@@ -2,9 +2,9 @@
 
 namespace VintageStoryModManager.Views.Popups
 {
-    public partial class CreateModpackPopup : Window
+    public partial class ImportModpackPopup : Window
     {
-        public CreateModpackPopup()
+        public ImportModpackPopup()
         {
             InitializeComponent();
         }
