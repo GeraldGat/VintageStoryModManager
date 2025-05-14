@@ -27,7 +27,7 @@ namespace VintageStoryModManager.ViewModels
         private async Task LoadVersions(bool forceReload = false)
         {
             Versions.Clear();
-            Versions = [.. (await _gameVersionManager.GetAvailableAndInstalledVersionsAndDownloadUrlAsync(forceReload)).Values];
+            Versions = [.. (await _gameVersionManager.GetAvailableAndInstalledVersionsWithDownloadUrlAsync(forceReload)).Values];
         }
 
         [RelayCommand]

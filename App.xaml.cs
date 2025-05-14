@@ -46,7 +46,9 @@ namespace VintageStoryModManager
                     // Services
                     services.AddSingleton<IConfigurationService, ConfigurationService>();
                     services.AddSingleton<IGameVersionManager, GameVersionManager>();
+                    services.AddSingleton<IModpackManager, ModpackManager>();
                     services.AddSingleton<INavigationService, NavigationService>();
+                    services.AddSingleton<IPopupManager, PopupManager>();
                     services.AddSingleton<IThemeManager, ThemeManager>();
                     services.AddHttpClient<IVersionDownloadService, VersionDownloadService>();
                     services.AddHttpClient<IVintageStoryApiService, VintageStoryApiService>(client =>
@@ -57,6 +59,7 @@ namespace VintageStoryModManager
                     // ViewModels
                     services.AddTransient<MainWindowViewModel>();
                     services.AddTransient<ManageVersionPageViewModel>();
+                    services.AddTransient<MyModpacksPageViewModel>();
                     services.AddTransient<SettingsPageViewModel>();
                 })
                 .Build();

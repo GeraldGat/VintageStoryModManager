@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="/Resources/Styles/Controls.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/DataGrids.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Menus.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/Popups.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Texts.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/UserControls.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Windows.xaml"/>

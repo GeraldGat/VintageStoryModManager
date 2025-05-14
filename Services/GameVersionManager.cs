@@ -15,8 +15,14 @@ namespace VintageStoryModManager.Services
         private readonly IConfigurationService _configurationService = configurationService;
         private JsonSerializerOptions _jsonSerializerOptions = new();
 
-        public async Task<IDictionary<string, VersionInfos>> GetAvailableAndInstalledVersionsAndDownloadUrlAsync(bool forceReload = false)
+        private IDictionary<string, VersionInfos>? _availableAndInstalledVersionsWithDownloadUrl;
+        private IDictionary<string, VersionInfos>? _installedVersion;
+
+        public async Task<IDictionary<string, VersionInfos>> GetAvailableAndInstalledVersionsWithDownloadUrlAsync(bool forceReload = false)
         {
+            if (_availableAndInstalledVersionsWithDownloadUrl != null && !forceReload)
+                return _availableAndInstalledVersionsWithDownloadUrl;
+
             IDictionary<string, VersionInfos>? versions;
 
             if (!forceReload && File.Exists(App.AppAvailableVersionsPath))
@@ -42,6 +48,26 @@ namespace VintageStoryModManager.Services
                 return new Dictionary<string, VersionInfos>();
             }
 
+            var installedVersions = await GetInstalledVersions();
+            foreach (var (versionName, insatlledVersion) in installedVersions)
+            {
+                if (versions.ContainsKey(versionName))
+                {
+                    versions[versionName].FolderName = insatlledVersion.FolderName;
+                }
+            }
+
+            _availableAndInstalledVersionsWithDownloadUrl = versions;
+            return _availableAndInstalledVersionsWithDownloadUrl;
+        }
+
+        public async Task<IDictionary<string, VersionInfos>> GetInstalledVersions()
+        {
+            if(_installedVersion != null)
+                return _installedVersion;
+
+            var versions = FormatVersionList(await _vintageStoryApiService.GetVersionsAsync());
+
             foreach (var directory in Directory.GetDirectories(_configurationService.AppConfig.GameVersionsPath, "*", SearchOption.TopDirectoryOnly))
             {
                 var assetsDir = Path.Combine(directory, "assets");
@@ -66,7 +92,10 @@ namespace VintageStoryModManager.Services
                 }
             }
 
-            return versions;
+            versions = versions.Where(v => v.Value.IsInstalled).ToDictionary<string, VersionInfos>();
+
+            _installedVersion = versions;
+            return _installedVersion;
         }
 
         private IDictionary<string, VersionInfos> FormatVersionList(IEnumerable<VersionInfos> versions)
