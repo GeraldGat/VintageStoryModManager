@@ -23,6 +23,7 @@ namespace VintageStoryModManager.Views
                 HomeMenu.IsChecked = true;
             };
         }
+
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)

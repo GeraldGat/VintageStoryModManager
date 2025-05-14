@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
-using System.Collections.ObjectModel;
 using System.IO.Compression;
 using System.IO;
 using System.Text.Json;

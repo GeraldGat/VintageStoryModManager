@@ -98,6 +98,12 @@
                     </ContentControl.Template>
                 </ContentControl>
             </Grid>
+
+            <Border x:Name="Overlay"
+                    Background="#80000000"
+                    Visibility="Collapsed"
+                    Panel.ZIndex="1000"
+                    Grid.ColumnSpan="2"/>
         </Grid>
     </Border>
 </Window>

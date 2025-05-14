@@ -46,6 +46,7 @@ namespace VintageStoryModManager
                     // Services
                     services.AddSingleton<IConfigurationService, ConfigurationService>();
                     services.AddSingleton<IGameVersionManager, GameVersionManager>();
+                    services.AddSingleton<IMainWindowUiService, MainWindowUiService>();
                     services.AddSingleton<IModpackManager, ModpackManager>();
                     services.AddSingleton<INavigationService, NavigationService>();
                     services.AddSingleton<IPopupManager, PopupManager>();
@@ -71,6 +72,9 @@ namespace VintageStoryModManager
 
             var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
             mainWindow.Show();
+
+            var mainWindowUiService = AppHost.Services.GetRequiredService<IMainWindowUiService>();
+            mainWindowUiService.MainWindow = mainWindow;
 
             var themeManager = AppHost.Services.GetRequiredService<IThemeManager>();
             var configurationService = AppHost.Services.GetRequiredService<IConfigurationService>();
