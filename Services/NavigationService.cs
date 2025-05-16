@@ -19,13 +19,15 @@ namespace VintageStoryModManager.Services
             _contentControl = contentControl;
         }
 
-        public void Navigate<TView>() where TView : UserControl
+        public TView Navigate<TView>() where TView : UserControl
         {
             if (_contentControl == null)
                 throw new InvalidOperationException("ContentControl not set in NavigationService.");
 
             var view = _serviceProvider.GetRequiredService<TView>();
             _contentControl.Content = view;
+
+            return view;
         }
     }
 }

@@ -22,5 +22,7 @@
     <SolidColorBrush x:Key="ButtonBackground" Color="#3C3F48"/>
     <SolidColorBrush x:Key="ButtonHoverBackground" Color="#5b606e"/>
     <SolidColorBrush x:Key="ButtonPressedBackground" Color="#D9D9D9"/>
+
+    <SolidColorBrush x:Key="CardBackgroundColor" Color="#3C3F48"/>
     
 </ResourceDictionary>

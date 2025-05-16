@@ -39,6 +39,7 @@ namespace VintageStoryModManager
                     services.AddTransient<MainWindow>();
                         // Controls
                     services.AddTransient<BrowseModpacksPage>();
+                    services.AddTransient<EditModpackPage>();
                     services.AddTransient<ManageVersionsPage>();
                     services.AddTransient<MyModpacksPage>();
                     services.AddTransient<SettingsPage>();
@@ -47,6 +48,7 @@ namespace VintageStoryModManager
                     services.AddSingleton<IConfigurationService, ConfigurationService>();
                     services.AddSingleton<IGameVersionManager, GameVersionManager>();
                     services.AddSingleton<IMainWindowUiService, MainWindowUiService>();
+                    services.AddSingleton<IModManager, ModManager>();
                     services.AddSingleton<IModpackManager, ModpackManager>();
                     services.AddSingleton<INavigationService, NavigationService>();
                     services.AddSingleton<IPopupManager, PopupManager>();
@@ -58,6 +60,7 @@ namespace VintageStoryModManager
                     });
 
                     // ViewModels
+                    services.AddTransient<EditModpackPageViewModel>();
                     services.AddTransient<MainWindowViewModel>();
                     services.AddTransient<ManageVersionPageViewModel>();
                     services.AddTransient<MyModpacksPageViewModel>();
