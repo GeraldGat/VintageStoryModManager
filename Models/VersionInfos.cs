@@ -6,7 +6,7 @@ namespace VintageStoryModManager.Models
 {
     public partial class VersionInfos : ObservableObject
     {
-        public required int TagId { get; set; }
+        public required int? TagId { get; set; }
         public required string Name { get; set; }
         public string? DownloadUrl { get; set; }
 

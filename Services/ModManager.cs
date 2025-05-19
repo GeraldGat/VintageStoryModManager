@@ -87,7 +87,16 @@ namespace VintageStoryModManager.Services
 
         public void RemoveMod(ModpackInfos modpackInfos, ModInfos modInfos)
         {
-            throw new NotImplementedException();
+            string path = Path.Combine(_configurationService.AppConfig.ModpacksPath, modpackInfos.FolderName, "Mods", modInfos.ArchiveName ?? "");
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                modpackInfos.Mods?.Remove(modInfos.ModId);
+            }
+            else
+            {
+                MessageBox.Show("Can't locate the mod archive.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

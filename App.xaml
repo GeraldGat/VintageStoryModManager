@@ -5,6 +5,7 @@
              xmlns:converters="clr-namespace:VintageStoryModManager.Converters">
     <Application.Resources>
         <ResourceDictionary>
+            <converters:ImageUrlToBitmapConverter x:Key="ImageUrlToBitmapConverter"/>
             <converters:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter"/>
             <converters:WidthToColumnCountConverter x:Key="WidthToColumnCountConverter"/>
 

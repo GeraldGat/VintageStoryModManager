@@ -70,7 +70,17 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" />
+                    <Grid Grid.Row="0" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Column="0"/>
+                        <TextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" />
+                    </Grid>
+
+                    
 
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                         <ItemsControl ItemsSource="{Binding Mods}">
@@ -120,6 +130,8 @@
                                                     <iconPacks:PackIconLucide Kind="History"/>
                                                 </Button>
                                                 <Button Grid.Column="2"
+                                                        Command="{Binding DataContext.DeleteModCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
                                                         Style="{StaticResource LastCardButton}">
                                                     <iconPacks:PackIconLucide Kind="Trash2"/>
                                                 </Button>
@@ -139,7 +151,40 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBox Text="{Binding SearchAvailableText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" />
+
+
+                    <Grid Grid.Row="0" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="0" Grid.Column="0"/>
+                        <TextBox Text="{Binding TextFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Grid.Row="0"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="3"/>
+                        
+                        <TextBlock Text="Filters:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="1" Grid.Column="0"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1"
+                                  SelectedItem="{Binding GameVersionFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  DisplayMemberPath="Name"
+                                  ItemsSource="{Binding GameVersions}" />
+                        <ComboBox Grid.Row="1" Grid.Column="2"
+                                  SelectedItem="{Binding OrderByFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  DisplayMemberPath="Key"
+                                  ItemsSource="{Binding OrderByList}" />
+                        <ComboBox Grid.Row="1" Grid.Column="3"
+                                  SelectedItem="{Binding OrderDirectionFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  DisplayMemberPath="Key"
+                                  ItemsSource="{Binding OrderDirectionList}" />
+                    </Grid>
 
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                         <ItemsControl ItemsSource="{Binding AvailableMods}">
@@ -165,14 +210,43 @@
 
                                             <Border Style="{StaticResource CardImage}" Grid.Row="0">
                                                 <Border.Background>
-                                                    <ImageBrush Stretch="Uniform" ImageSource="{Binding Image}"/>
+                                                    <ImageBrush Stretch="Uniform"
+                                                                ImageSource="{Binding Logo, 
+                                                                Converter={StaticResource ImageUrlToBitmapConverter}, 
+                                                                ConverterParameter='pack://application:,,,/Resources/Images/mod-default.png'}"/>
                                                 </Border.Background>
+
+                                                <Grid>
+                                                    <Border Background="#AA000000"
+                                                            CornerRadius="4"
+                                                            Padding="10,5,10,5"
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Top"
+                                                            Margin="5">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding Follows}" Margin="0,0,5,0"/>
+                                                            <iconPacks:PackIconLucide Kind="ThumbsUp" Width="12" Height="12" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </Border>
+
+                                                    <Border Background="#AA000000"
+                                                            CornerRadius="4"
+                                                            Padding="10,5,10,5"
+                                                            HorizontalAlignment="Right"
+                                                            VerticalAlignment="Top"
+                                                            Margin="5">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding Downloads}" Margin="0,0,5,0"/>
+                                                            <iconPacks:PackIconLucide Kind="Download" Width="12" Height="12" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </Grid>
                                             </Border>
 
                                             <Border Style="{StaticResource CardText}" Grid.Row="1">
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding Name}" Style="{StaticResource CardTitle}"/>
-                                                    <TextBlock Text="{Binding Description}"/>
+                                                    <TextBlock Text="{Binding Summary}"/>
                                                 </StackPanel>
                                             </Border>
 
