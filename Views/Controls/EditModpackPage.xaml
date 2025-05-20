@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VintageStoryModManager.Views.Controls"
+             xmlns:behaviors="clr-namespace:VintageStoryModManager.Behaviors"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d">
     <Grid>
@@ -163,25 +164,42 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="0" Grid.Column="0"/>
-                        <TextBox Text="{Binding TextFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding TextFilter, Mode=TwoWay}"
                                  Grid.Row="0"
                                  Grid.Column="1"
-                                 Grid.ColumnSpan="3"/>
+                                 Grid.ColumnSpan="4"/>
                         
                         <TextBlock Text="Filters:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="1" Grid.Column="0"/>
                         <ComboBox Grid.Row="1" Grid.Column="1"
-                                  SelectedItem="{Binding GameVersionFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  SelectedItem="{Binding GameVersionFilter, Mode=TwoWay}" 
                                   DisplayMemberPath="Name"
                                   ItemsSource="{Binding GameVersions}" />
-                        <ComboBox Grid.Row="1" Grid.Column="2"
-                                  SelectedItem="{Binding OrderByFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        <Grid Grid.Row="2" Grid.Column="2" Style="{StaticResource MultiComboBox}">
+                            <ToggleButton x:Name="TagFilterToggle" Content="{Binding TagSelectedText}" IsChecked="{Binding IsTagPopupOpen, Mode=TwoWay}" />
+                            <Popup IsOpen="{Binding IsTagPopupOpen}"
+                                   PlacementTarget="{Binding ElementName=TagFilterToggle}"
+                                   StaysOpen="False"
+                                    Width="{Binding ActualWidth, ElementName=TagFilterToggle}">
+                                <Border Width="Auto">
+                                    <ScrollViewer MaxHeight="300">
+                                        <ListBox ItemsSource="{Binding Tags}"
+                                                 SelectionMode="Multiple"
+                                                 DisplayMemberPath="Name"
+                                                 behaviors:ListBoxSelectedItemsBehavior.BindableSelectedItems="{Binding ModTagsFilter}" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ComboBox Grid.Row="1" Grid.Column="3"
+                                  SelectedItem="{Binding OrderByFilter, Mode=TwoWay}" 
                                   DisplayMemberPath="Key"
                                   ItemsSource="{Binding OrderByList}" />
-                        <ComboBox Grid.Row="1" Grid.Column="3"
-                                  SelectedItem="{Binding OrderDirectionFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        <ComboBox Grid.Row="1" Grid.Column="4"
+                                  SelectedItem="{Binding OrderDirectionFilter, Mode=TwoWay}" 
                                   DisplayMemberPath="Key"
                                   ItemsSource="{Binding OrderDirectionList}" />
                     </Grid>

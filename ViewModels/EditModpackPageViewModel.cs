@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows;
+using System.Windows.Controls;
 using VintageStoryModManager.Extensions;
 using VintageStoryModManager.Models;
 using VintageStoryModManager.Models.VintageStoryApi;
@@ -35,6 +37,9 @@ namespace VintageStoryModManager.ViewModels
         private VersionInfos? gameVersionFilter;
 
         [ObservableProperty]
+        private ObservableCollection<ModTag> modTagsFilter = [];
+
+        [ObservableProperty]
         private KeyValuePair<string, string?>? orderByFilter = new KeyValuePair<string, string?>("Created", OrderBy.Created);
 
         [ObservableProperty]
@@ -44,11 +49,20 @@ namespace VintageStoryModManager.ViewModels
         private IReadOnlyCollection<VersionInfos> gameVersions = [];
 
         [ObservableProperty]
+        private IReadOnlyCollection<ModTag> tags = [];
+
+        [ObservableProperty]
         private List<KeyValuePair<string, string?>> orderByList = GetConstantItems(typeof(OrderBy));
 
         [ObservableProperty]
         private List<KeyValuePair<string, string?>> orderDirectionList = GetConstantItems(typeof(OrderDirection));
 
+        [ObservableProperty]
+        private string tagSelectedText = "Select Tags";
+
+        [ObservableProperty]
+        private bool isTagPopupOpen = false;
+        
         private Task _loadGameVersionTask;
 
         public EditModpackPageViewModel(
@@ -64,6 +78,8 @@ namespace VintageStoryModManager.ViewModels
             _vintageStoryApiService = vintageStoryApiService;
 
             _loadGameVersionTask = LoadGameVersions();
+
+            ModTagsFilter.CollectionChanged += OnModTagsFilterChanged;
         }
 
         public async void LoadInfos(ModpackInfos modpackInfos)
@@ -77,16 +93,22 @@ namespace VintageStoryModManager.ViewModels
             GameVersionFilter = GameVersions.FirstOrDefault(x => x.TagId == modpackInfos.Version.TagId);
 
             _ = LoadAvailableMods();
+            _ = LoadModTags();
         }
 
         public async Task LoadAvailableMods()
         {
-            AvailableMods = [.. (await _vintageStoryApiService.GetModsAsync(TextFilter, null, GameVersionFilter?.TagId, OrderByFilter?.Value, OrderDirectionFilter?.Value)).Take(20)];
+            AvailableMods = [.. (await _vintageStoryApiService.GetModsAsync(TextFilter, ModTagsFilter.Select(tag => tag.TagId), GameVersionFilter?.TagId, OrderByFilter?.Value, OrderDirectionFilter?.Value)).Take(20)];
         }
 
         public async Task LoadGameVersions()
         {
             GameVersions = [new VersionInfos { TagId=null, Name=""},.. (await _vintageStoryApiService.GetVersionsAsync())];
+        }
+
+        public async Task LoadModTags()
+        {
+            Tags = [.. await _vintageStoryApiService.GetModTags()];
         }
 
         [RelayCommand]
@@ -125,6 +147,15 @@ namespace VintageStoryModManager.ViewModels
         partial void OnGameVersionFilterChanged(VersionInfos? value)
         {
             _ = LoadAvailableMods();
+        }
+
+        private void OnModTagsFilterChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            _ = LoadAvailableMods();
+            if (ModTagsFilter.Count() == 0)
+                TagSelectedText = "Select Tags";
+            else
+                TagSelectedText = string.Join(", ", ModTagsFilter.Select(tag => tag.Name));
         }
 
         partial void OnOrderByFilterChanged(KeyValuePair<string, string?>? value)
