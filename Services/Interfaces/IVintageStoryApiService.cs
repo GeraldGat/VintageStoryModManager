@@ -13,5 +13,6 @@ namespace VintageStoryModManager.Services.Interfaces
             string? orderBy = "asset.created",
             string? orderDirection = "desc");
         public Task<ModInfosApi?> GetModAsync(int modId);
+        public Task<IEnumerable<ModTag>> GetModTags();
     }
 }

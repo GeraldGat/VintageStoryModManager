@@ -19,13 +19,11 @@ namespace VintageStoryModManager.Services
 
         public async Task<IEnumerable<VersionInfos>> GetVersionsAsync()
         {
-            var response = await _httpClient.GetAsync("gameversions");
             try
             {
-                response.EnsureSuccessStatusCode();
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                GameVersionsApiResponse? gameVersionApiResponse = JsonSerializer.Deserialize<GameVersionsApiResponse>(jsonResponse, _jsonSerializerOptions);
-                return gameVersionApiResponse?.GameVersions ?? [];
+                var response = await _httpClient.GetAsync("gameversions");
+                var (status, gamesVersions) = await ApiResponse.GetItems<VersionInfos>(response);
+                return gamesVersions;
             } 
             catch (Exception e)
             {
@@ -69,11 +67,8 @@ namespace VintageStoryModManager.Services
                 };
 
                 var response = await _httpClient.GetAsync(uriBuilder.Uri);
-                response.EnsureSuccessStatusCode();
-
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                ModsInfosApiResponse? modsInfosApiResponse = JsonSerializer.Deserialize<ModsInfosApiResponse>(jsonResponse, _jsonSerializerOptions);
-                return modsInfosApiResponse?.Mods ?? [];
+                var (status, modsInfos) = await ApiResponse.GetItems<ModInfosApi>(response);
+                return modsInfos;
             }
             catch (Exception ex)
             {
@@ -83,9 +78,9 @@ namespace VintageStoryModManager.Services
 
         public async Task<ModInfosApi?> GetModAsync(int modId)
         {
-            var response = await _httpClient.GetAsync($"mod/{modId}");
             try
             {
+                var response = await _httpClient.GetAsync($"mod/{modId}");
                 response.EnsureSuccessStatusCode();
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 ModInfosApi? modsInfosApi = JsonSerializer.Deserialize<ModInfosApi>(jsonResponse, _jsonSerializerOptions);
@@ -94,6 +89,20 @@ namespace VintageStoryModManager.Services
             catch (Exception e)
             {
                 return null;
+            }
+        }
+
+        public async Task<IEnumerable<ModTag>> GetModTags()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("tags");
+                var (status, tags) = await ApiResponse.GetItems<ModTag>(response);
+                return tags;
+            }
+            catch (Exception e)
+            {
+                return [];
             }
         }
     }
