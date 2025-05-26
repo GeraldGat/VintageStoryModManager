@@ -4,6 +4,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Title="Create modpack"
         WindowStartupLocation="CenterOwner"
+        SizeToContent="WidthAndHeight"
         Style="{StaticResource PopupWindowStyle}">
     <Border Style="{StaticResource PopupWindowBorderStyle}">
         <StackPanel>

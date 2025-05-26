@@ -124,7 +124,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Button Grid.Column="0" Style="{StaticResource FirstCardButton}">
+                                                <Button Grid.Column="0" Style="{StaticResource FirstCardButton}"
+                                                        Command="{Binding DataContext.ShowModInstalledPopupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding ModId}">
                                                     <iconPacks:PackIconLucide Kind="Eye"/>
                                                 </Button>
                                                 <Button Grid.Column="1">
@@ -235,27 +237,17 @@
                                                 </Border.Background>
 
                                                 <Grid>
-                                                    <Border Background="#AA000000"
-                                                            CornerRadius="4"
-                                                            Padding="10,5,10,5"
-                                                            HorizontalAlignment="Left"
-                                                            VerticalAlignment="Top"
-                                                            Margin="5">
-                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                            <TextBlock Text="{Binding Follows}" Margin="0,0,5,0"/>
-                                                            <iconPacks:PackIconLucide Kind="ThumbsUp" Width="12" Height="12" VerticalAlignment="Center"/>
+                                                    <Border Style="{StaticResource IconBadge}">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Follows}" Foreground="#E4E4E4"/>
+                                                            <iconPacks:PackIconLucide Kind="ThumbsUp" Foreground="#E4E4E4"/>
                                                         </StackPanel>
                                                     </Border>
 
-                                                    <Border Background="#AA000000"
-                                                            CornerRadius="4"
-                                                            Padding="10,5,10,5"
-                                                            HorizontalAlignment="Right"
-                                                            VerticalAlignment="Top"
-                                                            Margin="5">
-                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                            <TextBlock Text="{Binding Downloads}" Margin="0,0,5,0"/>
-                                                            <iconPacks:PackIconLucide Kind="Download" Width="12" Height="12" VerticalAlignment="Center"/>
+                                                    <Border Style="{StaticResource IconBadge}" HorizontalAlignment="Right">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Downloads}" Foreground="#E4E4E4"/>
+                                                            <iconPacks:PackIconLucide Kind="Download" Foreground="#E4E4E4"/>
                                                         </StackPanel>
                                                     </Border>
                                                 </Grid>
@@ -273,7 +265,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Button Grid.Column="0" Style="{StaticResource FirstCardButton}">
+                                                <Button Grid.Column="0" Style="{StaticResource FirstCardButton}"
+                                                        Command="{Binding DataContext.ShowModAvailablePopupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding ModId}">
                                                     <iconPacks:PackIconLucide Kind="Eye"/>
                                                 </Button>
                                                 <Button Grid.Column="2"

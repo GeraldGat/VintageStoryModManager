@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
 using VintageStoryModManager.Models;
+using VintageStoryModManager.Models.VintageStoryApi;
 
 namespace VintageStoryModManager.Services.Interfaces
 {
@@ -7,5 +8,6 @@ namespace VintageStoryModManager.Services.Interfaces
     {
         public (bool, ModpackInfos?) ShowCreateModpackPopup();
         public (bool, ModpackInfos?, ZipArchive?) ShowImportModpackPopup();
+        public void ShowModPopup(ModInfosApi modInfos);
     }
 }

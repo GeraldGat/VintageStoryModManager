@@ -6,10 +6,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <converters:ImageUrlToBitmapConverter x:Key="ImageUrlToBitmapConverter"/>
+            <converters:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter"/>
             <converters:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter"/>
             <converters:WidthToColumnCountConverter x:Key="WidthToColumnCountConverter"/>
 
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles/Badges.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Cards.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Controls.xaml"/>

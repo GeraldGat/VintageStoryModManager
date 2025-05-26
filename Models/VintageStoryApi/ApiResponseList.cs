@@ -1,10 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Net.Http;
+using VintageStoryModManager.Converters;
 
 namespace VintageStoryModManager.Models.VintageStoryApi
 {
-    public class ApiResponse
+    public class ApiResponseList
     {
         public required string StatusCode { get; set; }
         [JsonExtensionData]
@@ -14,13 +15,16 @@ namespace VintageStoryModManager.Models.VintageStoryApi
         {
             var jsonSerialiserOptions = new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true,
+                Converters = {
+                    new JsonDateTimeConverter()
+                }
             };
             try
             {
                 response.EnsureSuccessStatusCode();
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonSerializer.Deserialize<ApiResponse>(jsonResponse, jsonSerialiserOptions);
+                var apiResponse = JsonSerializer.Deserialize<ApiResponseList>(jsonResponse, jsonSerialiserOptions);
                 if (apiResponse == null || apiResponse.Data == null || !apiResponse.Data.Any())
                     return (string.Empty, Enumerable.Empty<T>());
                 var items = apiResponse.Data.First().Value;

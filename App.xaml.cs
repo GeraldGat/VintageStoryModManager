@@ -47,6 +47,7 @@ namespace VintageStoryModManager
                     // Services
                     services.AddSingleton<IConfigurationService, ConfigurationService>();
                     services.AddSingleton<IGameVersionManager, GameVersionManager>();
+                    services.AddSingleton<IHtmlThemeManager, HtmlThemeManager>();
                     services.AddSingleton<IMainWindowUiService, MainWindowUiService>();
                     services.AddSingleton<IModManager, ModManager>();
                     services.AddSingleton<IModpackManager, ModpackManager>();

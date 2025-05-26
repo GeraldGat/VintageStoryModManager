@@ -6,8 +6,10 @@ namespace VintageStoryModManager.Models.VintageStoryApi
     public class ModInfosApi
     {
         public required int ModId { get; set; }
+        public required int AssetId { get; set; }
         public required string Name { get; set; }
         public required string Author { get; set; }
+        public string? UrlAlias { get; set; }
         public string? Summary { get; set; }
         public string? Text { get; set; }
         public string? Logo { get; set; }
@@ -20,8 +22,9 @@ namespace VintageStoryModManager.Models.VintageStoryApi
         public int? Downloads { get; set; }
         public int? Follows { get; set; }
         public string? Side { get; set; }
-        public string? LastReleased { get; set; }
-        [JsonIgnore]
-        public BitmapImage? Image { get; set; }
+        public DateTime? Created { get; set; }
+        public DateTime? LastReleased { get; set; }
+        public string[]? Tags { get; set; }
+        public ReleaseInfosApi[]? Releases { get; set; }
     }
 }

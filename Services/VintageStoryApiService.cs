@@ -1,8 +1,8 @@
-﻿using System.Collections.Specialized;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text.Json;
 using System.Web;
 using VintageStoryModManager.Constants;
+using VintageStoryModManager.Converters;
 using VintageStoryModManager.Models;
 using VintageStoryModManager.Models.VintageStoryApi;
 using VintageStoryModManager.Services.Interfaces;
@@ -14,7 +14,10 @@ namespace VintageStoryModManager.Services
         private readonly HttpClient _httpClient = httpClient;
         private JsonSerializerOptions _jsonSerializerOptions = new()
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            Converters = {
+                new JsonDateTimeConverter()
+            }
         };
 
         public async Task<IEnumerable<VersionInfos>> GetVersionsAsync()
@@ -22,7 +25,7 @@ namespace VintageStoryModManager.Services
             try
             {
                 var response = await _httpClient.GetAsync("gameversions");
-                var (status, gamesVersions) = await ApiResponse.GetItems<VersionInfos>(response);
+                var (status, gamesVersions) = await ApiResponseList.GetItems<VersionInfos>(response);
                 return gamesVersions;
             } 
             catch (Exception e)
@@ -67,7 +70,7 @@ namespace VintageStoryModManager.Services
                 };
 
                 var response = await _httpClient.GetAsync(uriBuilder.Uri);
-                var (status, modsInfos) = await ApiResponse.GetItems<ModInfosApi>(response);
+                var (status, modsInfos) = await ApiResponseList.GetItems<ModInfosApi>(response);
                 return modsInfos;
             }
             catch (Exception ex)
@@ -78,13 +81,21 @@ namespace VintageStoryModManager.Services
 
         public async Task<ModInfosApi?> GetModAsync(int modId)
         {
+            return await GetModAsyncFromEndpoint($"mod/{modId}");
+        }
+
+        public async Task<ModInfosApi?> GetModAsync(string modId)
+        {
+            return await GetModAsyncFromEndpoint($"mod/{modId}");
+        }
+
+        private async Task<ModInfosApi?> GetModAsyncFromEndpoint(string endpoint)
+        {
             try
             {
-                var response = await _httpClient.GetAsync($"mod/{modId}");
-                response.EnsureSuccessStatusCode();
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                ModInfosApi? modsInfosApi = JsonSerializer.Deserialize<ModInfosApi>(jsonResponse, _jsonSerializerOptions);
-                return modsInfosApi;
+                var response = await _httpClient.GetAsync(endpoint);
+                var modInfosApi = await ApiResponseItem.GetItem<ModInfosApi>(response);
+                return modInfosApi;
             }
             catch (Exception e)
             {
@@ -97,7 +108,7 @@ namespace VintageStoryModManager.Services
             try
             {
                 var response = await _httpClient.GetAsync("tags");
-                var (status, tags) = await ApiResponse.GetItems<ModTag>(response);
+                var (status, tags) = await ApiResponseList.GetItems<ModTag>(response);
                 return tags;
             }
             catch (Exception e)

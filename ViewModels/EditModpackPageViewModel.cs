@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using VintageStoryModManager.Extensions;
 using VintageStoryModManager.Models;
 using VintageStoryModManager.Models.VintageStoryApi;
+using VintageStoryModManager.Services;
 using VintageStoryModManager.Services.Interfaces;
 using VintageStoryModManager.ViewModels.Abstracts;
 using static VintageStoryModManager.Constants.ModApiFilters;
@@ -16,6 +17,7 @@ namespace VintageStoryModManager.ViewModels
     public partial class EditModpackPageViewModel : ModpackAbstractViewModels
     {
         private readonly IModManager _modManager;
+        private readonly IPopupManager _popupManager;
         private readonly IVintageStoryApiService _vintageStoryApiService;
 
         [ObservableProperty]
@@ -71,10 +73,12 @@ namespace VintageStoryModManager.ViewModels
             IMainWindowUiService mainWindowUiService,
             IModManager modManager,
             INavigationService navigationService,
+            IPopupManager popupManager,
             IVintageStoryApiService vintageStoryApiService
         ) : base(configurationService, gameVersionManager, mainWindowUiService, navigationService)
         {
             _modManager = modManager;
+            _popupManager = popupManager;
             _vintageStoryApiService = vintageStoryApiService;
 
             _loadGameVersionTask = LoadGameVersions();
@@ -109,6 +113,35 @@ namespace VintageStoryModManager.ViewModels
         public async Task LoadModTags()
         {
             Tags = [.. await _vintageStoryApiService.GetModTags()];
+        }
+
+        [RelayCommand]
+        public async Task ShowModInstalledPopup(string modId)
+        {
+            var modInfosApi = await _vintageStoryApiService.GetModAsync(modId);
+            if (modInfosApi == null)
+            {
+                MessageBox.Show("An error occurred: The mod couldn't be resolved correctly.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            ShowModPopup(modInfosApi);
+        }
+
+        [RelayCommand]
+        public async Task ShowModAvailablePopup(int modId)
+        {
+            var modInfosApi = await _vintageStoryApiService.GetModAsync(modId);
+            if (modInfosApi == null)
+            {
+                MessageBox.Show("An error occurred: The mod couldn't be resolved correctly.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            ShowModPopup(modInfosApi);
+        }
+
+        private void ShowModPopup(ModInfosApi modInfosApi)
+        {
+            _popupManager.ShowModPopup(modInfosApi);
         }
 
         [RelayCommand]
