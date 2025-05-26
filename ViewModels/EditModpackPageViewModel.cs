@@ -2,12 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
-using VintageStoryModManager.Extensions;
 using VintageStoryModManager.Models;
 using VintageStoryModManager.Models.VintageStoryApi;
-using VintageStoryModManager.Services;
 using VintageStoryModManager.Services.Interfaces;
 using VintageStoryModManager.ViewModels.Abstracts;
 using static VintageStoryModManager.Constants.ModApiFilters;
@@ -34,6 +32,7 @@ namespace VintageStoryModManager.ViewModels
 
         [ObservableProperty]
         private string textFilter = String.Empty;
+        private readonly System.Timers.Timer _debounceTimerTextFilter;
 
         [ObservableProperty]
         private VersionInfos? gameVersionFilter;
@@ -80,6 +79,10 @@ namespace VintageStoryModManager.ViewModels
             _modManager = modManager;
             _popupManager = popupManager;
             _vintageStoryApiService = vintageStoryApiService;
+
+            _debounceTimerTextFilter = new System.Timers.Timer(300);
+            _debounceTimerTextFilter.Elapsed += OnDebounceTimerTextFilterElapsed;
+            _debounceTimerTextFilter.AutoReset = false;
 
             _loadGameVersionTask = LoadGameVersions();
 
@@ -173,6 +176,12 @@ namespace VintageStoryModManager.ViewModels
         }
 
         partial void OnTextFilterChanged(string value)
+        {
+            _debounceTimerTextFilter.Stop();
+            _debounceTimerTextFilter.Start();
+        }
+
+        private void OnDebounceTimerTextFilterElapsed(object? sender, ElapsedEventArgs e)
         {
             _ = LoadAvailableMods();
         }
