@@ -28,7 +28,7 @@ namespace VintageStoryModManager.ViewModels.Popups
         }
 
         [RelayCommand]
-        private void OpenVsModUrl() => OpenUrl($"https://mods.vintagestory.at/show/mod/{ModInfos.ModId}");
+        private void OpenVsModUrl() => OpenUrl($"https://mods.vintagestory.at/show/mod/{ModInfos.AssetId}");
 
         private bool CanOpenHomepage() => !string.IsNullOrWhiteSpace(ModInfos.HomepageUrl);
         [RelayCommand(CanExecute = nameof(CanOpenHomepage))]
