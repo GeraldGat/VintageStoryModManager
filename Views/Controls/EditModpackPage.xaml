@@ -129,8 +129,10 @@
                                                         CommandParameter="{Binding ModId}">
                                                     <iconPacks:PackIconLucide Kind="Eye"/>
                                                 </Button>
-                                                <Button Grid.Column="1">
-                                                    <iconPacks:PackIconLucide Kind="History"/>
+                                                <Button Grid.Column="1"
+                                                        Command="{Binding DataContext.ChangeModVersionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}">
+                                                    <iconPacks:PackIconLucide Kind="Download"/>
                                                 </Button>
                                                 <Button Grid.Column="2"
                                                         Command="{Binding DataContext.DeleteModCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
@@ -271,7 +273,9 @@
                                                     <iconPacks:PackIconLucide Kind="Eye"/>
                                                 </Button>
                                                 <Button Grid.Column="2"
-                                                        Style="{StaticResource LastCardButton}">
+                                                        Style="{StaticResource LastCardButton}"
+                                                        Command="{Binding DataContext.InstallModAvailableCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}">
                                                     <iconPacks:PackIconLucide Kind="Download"/>
                                                 </Button>
                                             </Grid>

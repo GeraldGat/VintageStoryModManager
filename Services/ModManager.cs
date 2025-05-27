@@ -5,6 +5,8 @@ using System.Windows.Media.Imaging;
 using System.Windows;
 using VintageStoryModManager.Models;
 using VintageStoryModManager.Services.Interfaces;
+using VintageStoryModManager.Models.VintageStoryApi;
+using System.Net.Http;
 
 namespace VintageStoryModManager.Services
 {
@@ -80,9 +82,32 @@ namespace VintageStoryModManager.Services
             return modpackInfos;
         }
 
-        public void AddMod(ModpackInfos modpackInfos, ModInfos modInfos)
+        public async Task AddMod(ModpackInfos modpackInfos, ReleaseInfosApi releaseInfos)
         {
-            throw new NotImplementedException();
+            string path = Path.Combine(_configurationService.AppConfig.ModpacksPath, modpackInfos.FolderName, "Mods");
+
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                using (var downloadStream = await new HttpClient().GetStreamAsync(releaseInfos.MainFile))
+                {
+                    var filepath = Path.Combine(path, releaseInfos.Filename);
+                    using (var fileStream = new FileStream(filepath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        await downloadStream.CopyToAsync(fileStream);
+                        await fileStream.FlushAsync();
+                        fileStream.Close();
+                    }
+                }
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while downloading or installing the mod.", "Installation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void RemoveMod(ModpackInfos modpackInfos, ModInfos modInfos)

@@ -5,6 +5,7 @@
              xmlns:converters="clr-namespace:VintageStoryModManager.Converters">
     <Application.Resources>
         <ResourceDictionary>
+            <converters:CompatibilityToForegroundConverter x:Key="CompatibilityToForegroundConverter"/>
             <converters:ImageUrlToBitmapConverter x:Key="ImageUrlToBitmapConverter"/>
             <converters:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter"/>
             <converters:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter"/>

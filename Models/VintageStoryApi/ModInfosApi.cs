@@ -9,6 +9,7 @@ namespace VintageStoryModManager.Models.VintageStoryApi
         public required int AssetId { get; set; }
         public required string Name { get; set; }
         public required string Author { get; set; }
+        public string[] ModIdStrs { get; set; } = [];
         public string? UrlAlias { get; set; }
         public string? Summary { get; set; }
         public string? Text { get; set; }

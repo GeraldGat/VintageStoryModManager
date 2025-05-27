@@ -80,8 +80,41 @@ namespace VintageStoryModManager.Services
             popup.DataContext = viewModel;
             popup.Owner = _mainWindowUiService.MainWindow;
 
-            if(modInfos.Text != null)
+            if (modInfos.Text != null)
                 popup.LoadHtmlRichText(_htmlThemeManager.WrapInTemplate(modInfos.Text));
+
+            bool? result = popup.ShowDialog();
+            _mainWindowUiService.HideOverlay();
+        }
+
+        public (bool, ReleaseInfosApi?) ShowInstallModPopup(ModInfosApi modInfos, string modpackGameVersion, string? actualModVersion = null)
+        {
+            _mainWindowUiService.ShowOverlay();
+            var popup = new InstallModPopup();
+            var dialogService = new DialogService(popup);
+            var viewModel = new InstallModPopupViewModel(dialogService, this, modInfos, modpackGameVersion, actualModVersion);
+            popup.DataContext = viewModel;
+            popup.Owner = _mainWindowUiService.MainWindow;
+
+            bool? result = popup.ShowDialog();
+            _mainWindowUiService.HideOverlay();
+
+            if (result == true && viewModel.SelectedRelease != null)
+            {
+                return (true, viewModel.SelectedRelease);
+            }
+
+            return (false, null);
+        }
+
+        public void ShowDisplayHtmlPopup(string html)
+        {
+            _mainWindowUiService.ShowOverlay();
+            var popup = new DisplayHtmlPopup();
+            var dialogService = new DialogService(popup);
+            popup.Owner = _mainWindowUiService.MainWindow;
+
+            popup.LoadHtmlRichText(_htmlThemeManager.WrapInTemplate(html));
 
             bool? result = popup.ShowDialog();
             _mainWindowUiService.HideOverlay();

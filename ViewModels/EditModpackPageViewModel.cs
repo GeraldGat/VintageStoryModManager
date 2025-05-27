@@ -92,9 +92,7 @@ namespace VintageStoryModManager.ViewModels
         public async void LoadInfos(ModpackInfos modpackInfos)
         {
             ModpackInfos = modpackInfos;
-            _modManager.LoadInstalledMods(modpackInfos);
-            if(ModpackInfos != null && ModpackInfos.Mods != null)
-                Mods = [..ModpackInfos.Mods.Values.ToList()];
+            LoadInstalledMods();
 
             await _loadGameVersionTask;
             GameVersionFilter = GameVersions.FirstOrDefault(x => x.TagId == modpackInfos.Version.TagId);
@@ -103,23 +101,33 @@ namespace VintageStoryModManager.ViewModels
             _ = LoadModTags();
         }
 
-        public async Task LoadAvailableMods()
+        private void LoadInstalledMods()
+        {
+            if (ModpackInfos == null)
+                return;
+
+            _modManager.LoadInstalledMods(ModpackInfos);
+            if (ModpackInfos.Mods != null)
+                Mods = [.. ModpackInfos.Mods.Values.ToList()];
+        }
+
+        private async Task LoadAvailableMods()
         {
             AvailableMods = [.. (await _vintageStoryApiService.GetModsAsync(TextFilter, ModTagsFilter.Select(tag => tag.TagId), GameVersionFilter?.TagId, OrderByFilter?.Value, OrderDirectionFilter?.Value)).Take(20)];
         }
 
-        public async Task LoadGameVersions()
+        private async Task LoadGameVersions()
         {
             GameVersions = [new VersionInfos { TagId=null, Name=""},.. (await _vintageStoryApiService.GetVersionsAsync())];
         }
 
-        public async Task LoadModTags()
+        private async Task LoadModTags()
         {
             Tags = [.. await _vintageStoryApiService.GetModTags()];
         }
 
         [RelayCommand]
-        public async Task ShowModInstalledPopup(string modId)
+        private async Task ShowModInstalledPopup(string modId)
         {
             var modInfosApi = await _vintageStoryApiService.GetModAsync(modId);
             if (modInfosApi == null)
@@ -131,7 +139,7 @@ namespace VintageStoryModManager.ViewModels
         }
 
         [RelayCommand]
-        public async Task ShowModAvailablePopup(int modId)
+        private async Task ShowModAvailablePopup(int modId)
         {
             var modInfosApi = await _vintageStoryApiService.GetModAsync(modId);
             if (modInfosApi == null)
@@ -148,7 +156,55 @@ namespace VintageStoryModManager.ViewModels
         }
 
         [RelayCommand]
-        public void DeleteMod(ModInfos modInfos)
+        private async Task ChangeModVersion(ModInfos installedMod)
+        {
+            var fetchedModApi = await _vintageStoryApiService.GetModAsync(installedMod.ModId);
+            if (fetchedModApi == null)
+            {
+                MessageBox.Show("An error occurred: The mod couldn't be resolved correctly.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            await InstallOrUpdateMod(fetchedModApi, installedMod);
+        }
+
+        [RelayCommand]
+        private async Task InstallModAvailable(ModInfosApi modInfosApi)
+        {
+            if (ModpackInfos == null)
+                return;
+
+            ModInfos? installedMod = null;
+            if(ModpackInfos.Mods != null)
+                installedMod = ModpackInfos.Mods.First(m => modInfosApi.ModIdStrs.Contains(m.Value.ModId)).Value;
+
+            var fetchedModApi = await _vintageStoryApiService.GetModAsync(modInfosApi.ModId);
+            if (fetchedModApi == null)
+            {
+                MessageBox.Show("An error occurred: The mod couldn't be resolved correctly.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            await InstallOrUpdateMod(fetchedModApi, installedMod);
+        }
+
+        private async Task InstallOrUpdateMod(ModInfosApi toInstallMod, ModInfos? installedMod)
+        {
+            if (ModpackInfos?.GameVersion != null)
+            {
+                (var result, var release) = _popupManager.ShowInstallModPopup(toInstallMod, ModpackInfos.GameVersion, installedMod?.Version);
+                if(release != null)
+                {
+                    if(installedMod != null)
+                        _modManager.RemoveMod(ModpackInfos, installedMod);
+                    await _modManager.AddMod(ModpackInfos, release);
+                    LoadInstalledMods();
+                }
+            }
+        }
+
+        [RelayCommand]
+        private void DeleteMod(ModInfos modInfos)
         {
             if (MessageBoxResult.No == MessageBox.Show("Are you sure you want to remove this mod ?", "Confirmation", MessageBoxButton.YesNo) || ModpackInfos == null)
             {
