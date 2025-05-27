@@ -19,9 +19,11 @@ namespace VintageStoryModManager.ViewModels
         public MyModpacksPageViewModel(
             IConfigurationService configurationService,
             IGameVersionManager gameVersionManager,
+            IMainWindowUiService mainWindowUiService,
             IModpackManager modpackManager,
+            INavigationService navigationService,
             IPopupManager popupManager
-        ) : base(configurationService, gameVersionManager)
+        ) : base(configurationService, gameVersionManager, mainWindowUiService, navigationService)
         {
             _modpackManager = modpackManager;
             _popupManager = popupManager;
@@ -29,7 +31,7 @@ namespace VintageStoryModManager.ViewModels
             LoadModpacks();
         }
 
-        protected override void LoadModpacks()
+        protected void LoadModpacks()
         {
             Modpacks = [.. _modpackManager.GetInstalledModpacks()];
         }

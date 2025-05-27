@@ -37,7 +37,7 @@ namespace VintageStoryModManager.Services
 
                 versionsList = versionsList.Where(v => !String.IsNullOrWhiteSpace(v.DownloadUrl));
 
-                versions = FormatVersionList(versionsList);
+                versions = versionsList.ToDictionary(x => x.Name, x => x); ;
 
                 var json = JsonSerializer.Serialize(versions, _jsonSerializerOptions);
                 File.WriteAllText(App.AppAvailableVersionsPath, json);
@@ -66,7 +66,7 @@ namespace VintageStoryModManager.Services
             if(_installedVersion != null)
                 return _installedVersion;
 
-            var versions = FormatVersionList(await _vintageStoryApiService.GetVersionsAsync());
+            var versions = (await _vintageStoryApiService.GetVersionsAsync()).ToDictionary(x => x.Name, x => x);
 
             foreach (var directory in Directory.GetDirectories(_configurationService.AppConfig.GameVersionsPath, "*", SearchOption.TopDirectoryOnly))
             {
@@ -96,16 +96,6 @@ namespace VintageStoryModManager.Services
 
             _installedVersion = versions;
             return _installedVersion;
-        }
-
-        private IDictionary<string, VersionInfos> FormatVersionList(IEnumerable<VersionInfos> versions)
-        {
-            Dictionary<string, VersionInfos> formatedVersions = [];
-            foreach (var version in versions)
-            {
-                formatedVersions[version.Name] = version;
-            }
-            return formatedVersions;
         }
 
         public async Task<VersionInfos?> AddGameVersion(VersionInfos version)

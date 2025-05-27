@@ -5,14 +5,21 @@
              xmlns:converters="clr-namespace:VintageStoryModManager.Converters">
     <Application.Resources>
         <ResourceDictionary>
+            <converters:CompatibilityToForegroundConverter x:Key="CompatibilityToForegroundConverter"/>
+            <converters:ImageUrlToBitmapConverter x:Key="ImageUrlToBitmapConverter"/>
+            <converters:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter"/>
             <converters:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter"/>
+            <converters:WidthToColumnCountConverter x:Key="WidthToColumnCountConverter"/>
 
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles/Badges.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/Cards.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Controls.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/DataGrids.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Menus.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Popups.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/Tabs.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Texts.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/UserControls.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles/Windows.xaml"/>

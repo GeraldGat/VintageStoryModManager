@@ -1,0 +1,292 @@
+﻿<UserControl x:Class="VintageStoryModManager.Views.Controls.EditModpackPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VintageStoryModManager.Views.Controls"
+             xmlns:behaviors="clr-namespace:VintageStoryModManager.Behaviors"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Style="{StaticResource PageHeaderStyle}" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{Binding ModpackInfos.Name}" Grid.Column="0"/>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel HorizontalAlignment="Right" Grid.Row="0">
+                    <Button Command="{Binding StartCommand}"
+                        CommandParameter="{Binding ModpackInfos}">
+                        <Button.Content>
+                            <iconPacks:PackIconLucide Kind="Play"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Command="{Binding ExportCommand}"
+                        CommandParameter="{Binding ModpackInfos}">
+                        <Button.Content>
+                            <iconPacks:PackIconLucide Kind="Share"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Command="{Binding DeleteCommand}"
+                        CommandParameter="{Binding ModpackInfos}">
+                        <Button.Content>
+                            <iconPacks:PackIconLucide Kind="Trash2"/>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2">
+                    <Button Command="{Binding OpenConfigCommand}"
+                        CommandParameter="{Binding ModpackInfos}"
+                        Content="Open config"/>
+
+                    <Button Command="{Binding OpenFolderCommand}"
+                        CommandParameter="{Binding ModpackInfos}"
+                        Content="Open folder"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <TabControl Grid.Row="1">
+            <TabItem Header="Installed Mods">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Column="0"/>
+                        <TextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" />
+                    </Grid>
+
+                    
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                        <ItemsControl ItemsSource="{Binding Mods}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid IsItemsHost="True" 
+                                                 Columns="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}, 
+                                                           Converter={StaticResource WidthToColumnCountConverter},
+                                                           ConverterParameter='minColumnWidth=300;'}" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="5"
+                                            Height="350"
+                                            Style="{StaticResource Card}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            
+                                            <Border Style="{StaticResource CardImage}" Grid.Row="0">
+                                                <Border.Background>
+                                                    <ImageBrush Stretch="Uniform" ImageSource="{Binding Image}"/>
+                                                </Border.Background>
+                                            </Border>
+
+                                            <Border Style="{StaticResource CardText}" Grid.Row="1">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Name}" Style="{StaticResource CardTitle}"/>
+                                                    <TextBlock Text="{Binding Description}"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Grid Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Button Grid.Column="0" Style="{StaticResource FirstCardButton}"
+                                                        Command="{Binding DataContext.ShowModInstalledPopupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding ModId}">
+                                                    <iconPacks:PackIconLucide Kind="Eye"/>
+                                                </Button>
+                                                <Button Grid.Column="1"
+                                                        Command="{Binding DataContext.ChangeModVersionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}">
+                                                    <iconPacks:PackIconLucide Kind="Download"/>
+                                                </Button>
+                                                <Button Grid.Column="2"
+                                                        Command="{Binding DataContext.DeleteModCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource LastCardButton}">
+                                                    <iconPacks:PackIconLucide Kind="Trash2"/>
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Add Mods">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+
+
+                    <Grid Grid.Row="0" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="0" Grid.Column="0"/>
+                        <TextBox Text="{Binding TextFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Grid.Row="0"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="4"/>
+                        
+                        <TextBlock Text="Filters:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="1" Grid.Column="0"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1"
+                                  SelectedItem="{Binding GameVersionFilter, Mode=TwoWay}" 
+                                  DisplayMemberPath="Name"
+                                  ItemsSource="{Binding GameVersions}" />
+                        <Grid Grid.Row="2" Grid.Column="2" Style="{StaticResource MultiComboBox}">
+                            <ToggleButton x:Name="TagFilterToggle" Content="{Binding TagSelectedText}" IsChecked="{Binding IsTagPopupOpen, Mode=TwoWay}" />
+                            <Popup IsOpen="{Binding IsTagPopupOpen}"
+                                   PlacementTarget="{Binding ElementName=TagFilterToggle}"
+                                   StaysOpen="False"
+                                    Width="{Binding ActualWidth, ElementName=TagFilterToggle}">
+                                <Border Width="Auto">
+                                    <ScrollViewer MaxHeight="300">
+                                        <ListBox ItemsSource="{Binding Tags}"
+                                                 SelectionMode="Multiple"
+                                                 DisplayMemberPath="Name"
+                                                 behaviors:ListBoxSelectedItemsBehavior.BindableSelectedItems="{Binding ModTagsFilter}" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ComboBox Grid.Row="1" Grid.Column="3"
+                                  SelectedItem="{Binding OrderByFilter, Mode=TwoWay}" 
+                                  DisplayMemberPath="Key"
+                                  ItemsSource="{Binding OrderByList}" />
+                        <ComboBox Grid.Row="1" Grid.Column="4"
+                                  SelectedItem="{Binding OrderDirectionFilter, Mode=TwoWay}" 
+                                  DisplayMemberPath="Key"
+                                  ItemsSource="{Binding OrderDirectionList}" />
+                    </Grid>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                        <ItemsControl ItemsSource="{Binding AvailableMods}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid IsItemsHost="True" 
+                                                 Columns="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}, 
+                                                           Converter={StaticResource WidthToColumnCountConverter},
+                                                           ConverterParameter='minColumnWidth=300;'}" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="5"
+                                            Height="350"
+                                            Style="{StaticResource Card}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Border Style="{StaticResource CardImage}" Grid.Row="0">
+                                                <Border.Background>
+                                                    <ImageBrush Stretch="Uniform"
+                                                                ImageSource="{Binding Logo, 
+                                                                Converter={StaticResource ImageUrlToBitmapConverter}, 
+                                                                ConverterParameter='pack://application:,,,/Resources/Images/mod-default.png'}"/>
+                                                </Border.Background>
+
+                                                <Grid>
+                                                    <Border Style="{StaticResource IconBadge}">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Follows}" Foreground="#E4E4E4"/>
+                                                            <iconPacks:PackIconLucide Kind="ThumbsUp" Foreground="#E4E4E4"/>
+                                                        </StackPanel>
+                                                    </Border>
+
+                                                    <Border Style="{StaticResource IconBadge}" HorizontalAlignment="Right">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Downloads}" Foreground="#E4E4E4"/>
+                                                            <iconPacks:PackIconLucide Kind="Download" Foreground="#E4E4E4"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+
+                                            <Border Style="{StaticResource CardText}" Grid.Row="1">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Name}" Style="{StaticResource CardTitle}"/>
+                                                    <TextBlock Text="{Binding Summary}"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Grid Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Button Grid.Column="0" Style="{StaticResource FirstCardButton}"
+                                                        Command="{Binding DataContext.ShowModAvailablePopupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding ModId}">
+                                                    <iconPacks:PackIconLucide Kind="Eye"/>
+                                                </Button>
+                                                <Button Grid.Column="2"
+                                                        Style="{StaticResource LastCardButton}"
+                                                        Command="{Binding DataContext.InstallModAvailableCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}">
+                                                    <iconPacks:PackIconLucide Kind="Download"/>
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

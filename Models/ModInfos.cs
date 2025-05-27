@@ -8,6 +8,7 @@ namespace VintageStoryModManager.Models
         public required string ModId { get; set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
+        public string? Version { get; set; }
         [JsonIgnore]
         public BitmapImage? Image { get; set; }
         [JsonIgnore]

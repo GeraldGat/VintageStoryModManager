@@ -3,7 +3,7 @@ using System.IO;
 
 namespace VSModpackManager.Extensions
 {
-    public static class ZipArchiveExtended
+    public static class ZipArchiveExtensions
     {
         public static void CreateEntriesFromDirectory(this ZipArchive archive, string sourceDirectory, string entryRoot = "")
         {

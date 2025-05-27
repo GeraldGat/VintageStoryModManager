@@ -7,7 +7,7 @@ namespace VintageStoryModManager.Models
         public required string Name { get; set; }
         public required VersionInfos Version { get; set; }
         [JsonIgnore]
-        public List<ModInfos>? Mods { get; set; }
+        public Dictionary<string, ModInfos>? Mods { get; set; }
 
         [JsonIgnore]
         public string GameVersion => Version.Name;

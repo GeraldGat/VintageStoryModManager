@@ -8,6 +8,7 @@ using System.Windows;
 using VintageStoryModManager.Models;
 using VintageStoryModManager.Services.Interfaces;
 using VSModpackManager.Extensions;
+using VintageStoryModManager.Views.Controls;
 
 namespace VintageStoryModManager.ViewModels.Abstracts
 {
@@ -15,18 +16,20 @@ namespace VintageStoryModManager.ViewModels.Abstracts
     {
         private readonly IConfigurationService _configurationService;
         private readonly IGameVersionManager _gameVersionManager;
+        private readonly IMainWindowUiService _mainWindowUiService;
+        private readonly INavigationService _navigationService;
 
         private IDictionary<string, VersionInfos> installedVersions = new Dictionary<string, VersionInfos>();
 
-        public ModpackAbstractViewModels(IConfigurationService configurationService, IGameVersionManager gameVersionManager)
+        public ModpackAbstractViewModels(IConfigurationService configurationService, IGameVersionManager gameVersionManager, IMainWindowUiService mainWindowUiService, INavigationService navigationService)
         {
             _configurationService = configurationService;
             _gameVersionManager = gameVersionManager;
+            _mainWindowUiService = mainWindowUiService;
+            _navigationService = navigationService;
 
             LoadInstalledVersions();
         }
-
-        protected abstract void LoadModpacks();
 
         private async void LoadInstalledVersions()
         {
@@ -70,6 +73,18 @@ namespace VintageStoryModManager.ViewModels.Abstracts
             }
 
             Process.Start(exeFile, $"--dataPath \"{modpackFolder}\" --addModPath \"{modpackModFolder}\"");
+        }
+
+        [RelayCommand]
+        private void Edit(ModpackInfos modpackInfos)
+        {
+            _mainWindowUiService.UncheckMenu();
+            EditModpackPage view = _navigationService.Navigate<EditModpackPage>() as EditModpackPage;
+            if (view != null)
+            {
+                EditModpackPageViewModel viewModel = (EditModpackPageViewModel)view.DataContext;
+                viewModel.LoadInfos(modpackInfos);
+            }
         }
 
         [RelayCommand]
@@ -119,11 +134,39 @@ namespace VintageStoryModManager.ViewModels.Abstracts
             try
             {
                 Directory.Delete(Path.Combine(_configurationService.AppConfig.ModpacksPath, modpackInfos.FolderName), true);
-                LoadModpacks();
+                _mainWindowUiService.CheckHomeMenu();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred while uninstalling the modpack.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        [RelayCommand]
+        protected void OpenConfig(ModpackInfos modpackInfos)
+        {
+            string path = Path.Combine(_configurationService.AppConfig.ModpacksPath, modpackInfos.FolderName, "ModConfig");
+            if (Directory.Exists(path))
+            {
+                Process.Start("explorer.exe", path);
+            }
+            else
+            {
+                MessageBox.Show("Directory does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        [RelayCommand]
+        protected void OpenFolder(ModpackInfos modpackInfo)
+        {
+            string path = Path.Combine(_configurationService.AppConfig.ModpacksPath, modpackInfo.FolderName);
+            if (Directory.Exists(path))
+            {
+                Process.Start("explorer.exe", path);
+            }
+            else
+            {
+                MessageBox.Show("Directory does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
