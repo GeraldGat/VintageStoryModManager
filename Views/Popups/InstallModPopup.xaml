@@ -33,7 +33,7 @@
 
             <DataGrid x:Name="ReleaseDataGrid"
                       AutoGenerateColumns="False"
-                      IsReadOnly="True"https://www.dropbox.com/scl/fo/hu7gbljjng1dy7l89ppln/ANVNVYWVuux8eL3bVqgyBYI/betterruins.png?rlkey=y8pk6enrg1foqzvrhw24v51wb&raw=1
+                      IsReadOnly="True"
                       CanUserAddRows="False"
                       Grid.Row="2"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
